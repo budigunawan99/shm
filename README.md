@@ -1,3 +1,3 @@
 # shm
 
-A new Flutter project.
+A custom mobile app for inventory management built with Flutter
