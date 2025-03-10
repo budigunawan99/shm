@@ -18,7 +18,7 @@ class InventoryMenu extends StatelessWidget {
           left: 10.0,
         ),
         child: Icon(
-          Icons.input,
+          Icons.inbox,
           size: 25,
         ),
       ),
