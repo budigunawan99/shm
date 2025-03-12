@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shm/screens/input_data_screen.dart';
+import 'package:shm/model/input_data_screen_argument.dart';
+import 'package:shm/static/action_page.dart';
+import 'package:shm/static/navigation_route.dart';
 import 'package:shm/widgets/appbar.dart';
 
 class InventoryScreen extends StatelessWidget {
@@ -15,9 +17,13 @@ class InventoryScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const InputDataScreen();
-          }));
+          Navigator.pushNamed(
+            context,
+            NavigationRoute.inputDataRoute.name,
+            arguments: InputDataScreenArgument(
+              actionPage: ActionPage.add,
+            ),
+          );
         },
         tooltip: 'Add Product',
         child: const Icon(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shm/widgets/inventory_menu.dart';
-import 'package:shm/widgets/search_menu.dart';
 import 'package:shm/widgets/theme_switcher.dart';
 
 class Appbar extends StatelessWidget implements PreferredSizeWidget {
@@ -15,7 +14,6 @@ class Appbar extends StatelessWidget implements PreferredSizeWidget {
       leading: leadingOptions(context),
       actions: isFirstPage
           ? const [
-              SearchMenu(),
               InventoryMenu(),
               ThemeSwitcher(),
             ]

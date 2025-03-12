@@ -1,6 +1,6 @@
 name: shm
 description: "A custom mobile app for inventory management"
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -16,6 +16,8 @@ dependencies:
   provider: ^6.1.2
   collection: ^1.18.0
   image_picker: ^1.1.2
+  shimmer: ^3.0.0
+  sqflite: ^2.4.2
 
 dev_dependencies:
   flutter_test:

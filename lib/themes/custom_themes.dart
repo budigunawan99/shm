@@ -41,13 +41,6 @@ class CustomThemes {
       fontSize: 20.0,
       fontWeight: FontWeight.normal,
     ),
-// round corners
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(20),
-        bottomRight: Radius.circular(20),
-      ),
-    ),
 // icons button theme
     actionsIconTheme: const IconThemeData(
       color: Colors.white,

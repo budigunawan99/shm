@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shm/screens/inventory_screen.dart';
+import 'package:shm/static/navigation_route.dart';
 
 class InventoryMenu extends StatelessWidget {
   const InventoryMenu({super.key});
@@ -8,9 +8,7 @@ class InventoryMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const InventoryScreen();
-        }));
+        Navigator.pushNamed(context, NavigationRoute.inventoryRoute.name);
       },
       icon: const Padding(
         padding: EdgeInsets.only(
