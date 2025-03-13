@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shm/themes/shm_text_style.dart';
 
 class CustomThemes {
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
@@ -80,6 +81,8 @@ class CustomThemes {
         colorScheme: colorScheme,
         highlightColor: Colors.transparent,
         focusColor: focusColor,
+        textTheme: _textTheme,
+        useMaterial3: true,
         appBarTheme: (colorScheme == lightColorScheme
             ? lightAppBarTheme
             : darkAppBarTheme));
@@ -88,4 +91,24 @@ class CustomThemes {
   static ThemeData lightThemeData =
       themeData(lightColorScheme, _lightFocusColor);
   static ThemeData darkThemeData = themeData(darkColorScheme, _darkFocusColor);
+
+  static TextTheme get _textTheme {
+    return TextTheme(
+      displayLarge: ShmTextStyle.displayLarge,
+      displayMedium: ShmTextStyle.displayMedium,
+      displaySmall: ShmTextStyle.displaySmall,
+      headlineLarge: ShmTextStyle.headlineLarge,
+      headlineMedium: ShmTextStyle.headlineMedium,
+      headlineSmall: ShmTextStyle.headlineSmall,
+      titleLarge: ShmTextStyle.titleLarge,
+      titleMedium: ShmTextStyle.titleMedium,
+      titleSmall: ShmTextStyle.titleSmall,
+      bodyLarge: ShmTextStyle.bodyLargeBold,
+      bodyMedium: ShmTextStyle.bodyLargeMedium,
+      bodySmall: ShmTextStyle.bodyLargeRegular,
+      labelLarge: ShmTextStyle.labelLarge,
+      labelMedium: ShmTextStyle.labelMedium,
+      labelSmall: ShmTextStyle.labelSmall,
+    );
+  }
 }

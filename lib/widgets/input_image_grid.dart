@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -21,31 +22,33 @@ class _InputImageGridState extends State<InputImageGrid> {
     List<String> selectedImages =
         context.watch<InputImageProvider>().selectedImages;
     if (selectedImages.isEmpty) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            child: Container(
-              width: 140,
-              height: 120,
-              margin: const EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.grey,
+      return SliverToBoxAdapter(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              child: Container(
+                width: 100,
+                height: 100,
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.grey,
+                ),
+                child: const Icon(Icons.add_a_photo),
               ),
-              child: const Icon(Icons.add_a_photo),
+              onTap: () {
+                getImages();
+              },
             ),
-            onTap: () {
-              getImages();
-            },
-          ),
-          const Expanded(
-            child: SizedBox(),
-          ),
-        ],
+            const Expanded(
+              child: SizedBox(),
+            ),
+          ],
+        ),
       );
     }
-    return GridView.builder(
+    return SliverGrid.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         crossAxisSpacing: 12,
@@ -57,8 +60,7 @@ class _InputImageGridState extends State<InputImageGrid> {
           return InkWell(
             child: Container(
               width: double.infinity,
-              height: 200,
-              margin: const EdgeInsets.only(bottom: 20),
+              height: 250,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.grey,
@@ -70,22 +72,14 @@ class _InputImageGridState extends State<InputImageGrid> {
             },
           );
         }
-        final displaySelectedImages = File(selectedImages[index - 1]);
-        return kIsWeb
-            ? Image.network(
-                displaySelectedImages.path,
-                height: 100,
-                width: 100,
-                fit: BoxFit.fill,
-                alignment: Alignment.center,
-              )
-            : Image.file(
-                displaySelectedImages,
-                height: 100,
-                width: 100,
-                fit: BoxFit.fill,
-                alignment: Alignment.center,
-              );
+        final displaySelectedImages = base64Decode(selectedImages[index - 1]);
+        return Image.memory(
+          displaySelectedImages,
+          height: 100,
+          width: 100,
+          fit: BoxFit.fill,
+          alignment: Alignment.center,
+        );
       },
     );
   }
@@ -97,7 +91,9 @@ class _InputImageGridState extends State<InputImageGrid> {
 
     if (xfilePick.isNotEmpty) {
       for (var i = 0; i < xfilePick.length; i++) {
-        context.read<InputImageProvider>().setSelectedImages(xfilePick[i].path);
+        final bytes = File(xfilePick[i].path).readAsBytesSync();
+        String base64Image = base64Encode(bytes);
+        context.read<InputImageProvider>().setSelectedImages(base64Image);
       }
     } else {
       ScaffoldMessenger.of(context)

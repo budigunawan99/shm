@@ -67,122 +67,126 @@ class _InputDataScreenState extends State<InputDataScreen> {
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Kode Produk",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextField(
-                // controller: _titleController,
-                decoration: const InputDecoration(
-                  counterStyle: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: null,
-                maxLength: 20,
-                onChanged: (value) {
-                  _code = value;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Nama Produk",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextField(
-                // controller: _titleController,
-                decoration: const InputDecoration(
-                  counterStyle: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: null,
-                maxLength: 20,
-                onChanged: (value) {
-                  _title = value;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Deskripsi Produk",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextField(
-                // controller: _titleController,
-                decoration: const InputDecoration(
-                  counterStyle: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                maxLines: null,
-                maxLength: 50,
-                onChanged: (value) {
-                  _description = value;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Tambah Gambar",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Expanded(
-                child: InputImageGrid(),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Center(
-                child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.all(20),
-                    backgroundColor: Colors.white,
-                    shape: const StadiumBorder(),
-                  ),
-                  child: const Text(
-                    'Simpan',
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Kode Produk",
                     style: TextStyle(
-                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  TextField(
+                    // controller: _titleController,
+                    decoration: const InputDecoration(
+                      counterStyle: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: null,
+                    maxLength: 20,
+                    onChanged: (value) {
+                      _code = value;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "Nama Produk",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextField(
+                    // controller: _titleController,
+                    decoration: const InputDecoration(
+                      counterStyle: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: null,
+                    maxLength: 20,
+                    onChanged: (value) {
+                      _title = value;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "Deskripsi Produk",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextField(
+                    // controller: _titleController,
+                    decoration: const InputDecoration(
+                      counterStyle: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: null,
+                    maxLength: 50,
+                    onChanged: (value) {
+                      _description = value;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "Tambah Gambar",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ),
+            const InputImageGrid(),
+            SliverPadding(
+              padding: const EdgeInsets.only(top: 20),
+              sliver: SliverToBoxAdapter(
+                child: Center(
+                  child: TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(20),
+                      backgroundColor: Colors.white,
+                      shape: const StadiumBorder(),
+                    ),
+                    child: const Text(
+                      'Simpan',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
