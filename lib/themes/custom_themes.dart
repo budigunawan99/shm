@@ -37,10 +37,8 @@ class CustomThemes {
     centerTitle: false,
     scrolledUnderElevation: 10.0,
     toolbarHeight: 70.0,
-    titleTextStyle: TextStyle(
+    titleTextStyle: _textTheme.titleLarge?.copyWith(
       color: lightColorScheme.onPrimary,
-      fontSize: 20.0,
-      fontWeight: FontWeight.normal,
     ),
 // icons button theme
     actionsIconTheme: const IconThemeData(
@@ -56,17 +54,8 @@ class CustomThemes {
     centerTitle: false,
     scrolledUnderElevation: 10.0,
     toolbarHeight: 70.0,
-    titleTextStyle: TextStyle(
+    titleTextStyle: _textTheme.titleLarge?.copyWith(
       color: darkColorScheme.onPrimary,
-      fontSize: 20.0,
-      fontWeight: FontWeight.normal,
-    ),
-// round corners
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(20),
-        bottomRight: Radius.circular(20),
-      ),
     ),
 // icons button theme
     actionsIconTheme: const IconThemeData(

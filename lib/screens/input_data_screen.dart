@@ -73,23 +73,16 @@ class _InputDataScreenState extends State<InputDataScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Kode Produk",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   TextField(
                     // controller: _titleController,
-                    decoration: const InputDecoration(
-                      counterStyle: TextStyle(
-                        fontSize: 14,
-                      ),
+                    decoration: InputDecoration(
+                      counterStyle: Theme.of(context).textTheme.labelLarge,
                     ),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge,
                     maxLines: null,
                     maxLength: 20,
                     onChanged: (value) {
@@ -99,23 +92,15 @@ class _InputDataScreenState extends State<InputDataScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
+                  Text(
                     "Nama Produk",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   TextField(
                     // controller: _titleController,
-                    decoration: const InputDecoration(
-                      counterStyle: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    decoration: InputDecoration(
+                        counterStyle: Theme.of(context).textTheme.labelLarge),
+                    style: Theme.of(context).textTheme.bodyLarge,
                     maxLines: null,
                     maxLength: 20,
                     onChanged: (value) {
@@ -125,23 +110,15 @@ class _InputDataScreenState extends State<InputDataScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
+                  Text(
                     "Deskripsi Produk",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   TextField(
                     // controller: _titleController,
-                    decoration: const InputDecoration(
-                      counterStyle: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    decoration: InputDecoration(
+                        counterStyle: Theme.of(context).textTheme.labelLarge),
+                    style: Theme.of(context).textTheme.bodyLarge,
                     maxLines: null,
                     maxLength: 50,
                     onChanged: (value) {
@@ -151,11 +128,9 @@ class _InputDataScreenState extends State<InputDataScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
+                  Text(
                     "Tambah Gambar",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(
                     height: 20,
@@ -175,12 +150,9 @@ class _InputDataScreenState extends State<InputDataScreen> {
                       backgroundColor: Colors.white,
                       shape: const StadiumBorder(),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Simpan',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ),

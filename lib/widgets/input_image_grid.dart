@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shm/provider/input_image_provider.dart';
 
@@ -72,12 +72,12 @@ class _InputImageGridState extends State<InputImageGrid> {
             },
           );
         }
-        final displaySelectedImages = base64Decode(selectedImages[index - 1]);
-        return Image.memory(
+        final displaySelectedImages = File(selectedImages[index - 1]);
+        return Image.file(
           displaySelectedImages,
           height: 100,
           width: 100,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
           alignment: Alignment.center,
         );
       },
@@ -89,11 +89,16 @@ class _InputImageGridState extends State<InputImageGrid> {
         imageQuality: 100, maxHeight: 1000, maxWidth: 1000);
     List<XFile> xfilePick = pickedFile;
 
+    final String localPath = (await getApplicationDocumentsDirectory()).path;
+
     if (xfilePick.isNotEmpty) {
       for (var i = 0; i < xfilePick.length; i++) {
-        final bytes = File(xfilePick[i].path).readAsBytesSync();
-        String base64Image = base64Encode(bytes);
-        context.read<InputImageProvider>().setSelectedImages(base64Image);
+        final fileName = path.basename(xfilePick[i].path);
+        final File savedImage =
+            await File(xfilePick[i].path).copy("$localPath/$fileName");
+
+        print(savedImage.path);
+        context.read<InputImageProvider>().setSelectedImages(savedImage.path);
       }
     } else {
       ScaffoldMessenger.of(context)
