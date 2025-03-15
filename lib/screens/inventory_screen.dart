@@ -34,46 +34,83 @@ class InventoryScreen extends StatelessWidget {
           size: 28,
         ),
       ),
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          if (productList.isEmpty) {
-            return Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'images/empty.png',
-                      height: 250,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Card(
+              color: Theme.of(context).colorScheme.surfaceContainer,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
+                child: TextField(
+                  //  controller: _searchController,
+                  onTapOutside: (e) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  decoration: InputDecoration(
+                    icon: const Icon(
+                      Icons.search,
+                      size: 25,
                     ),
-                    const SizedBox.square(dimension: 8),
-                    Text(
-                      "Data produk masih kosong.",
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    border: InputBorder.none,
+                    hintText: 'Ketik nama produk',
+                    hintStyle: Theme.of(context).textTheme.labelLarge,
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.cancel_outlined),
+                      iconSize: 22,
+                      onPressed: () {},
                     ),
-                  ],
+                  ),
+                  // onChanged: {},
                 ),
               ),
-            );
-          } else {
-            return ListView.separated(
-              separatorBuilder: (context, index) => const Divider(
-                height: 1.0,
-                thickness: 0.5,
-              ),
-              itemCount: productList.length,
-              itemBuilder: (BuildContext context, int index) {
-                final product = productList[index];
-                return InkWell(
-                  child: ProductListItem(product: product),
-                  onTap: () {},
-                );
-              },
-            );
-          }
-        },
+            ),
+          ),
+          productList.isEmpty
+              ? Center(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'images/empty.png',
+                          height: 250,
+                        ),
+                        const SizedBox.square(dimension: 8),
+                        Text(
+                          "Data produk masih kosong.",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : SizedBox(
+                  height:
+                      MediaQuery.of(context).size.height - 3.5 * kToolbarHeight,
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(
+                      height: 1.0,
+                      thickness: 0.5,
+                    ),
+                    itemCount: productList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final product = productList[index];
+                      return InkWell(
+                        child: ProductListItem(product: product),
+                        onTap: () {},
+                      );
+                    },
+                  ),
+                )
+        ],
       ),
     );
   }
@@ -89,6 +126,38 @@ final List<Product> productList = [
     imagePath: [
       "/data/user/0/com.example.shm/app_flutter/scaled_IMG-20250112-WA0017.jpg",
     ],
+  ),
+  Product(
+    code: "xytwrsd",
+    title: "Bingkai kenangan",
+    description: "Produk bingkai kenangan",
+    created: DateTime.now(),
+    updated: DateTime.now(),
+    imagePath: [],
+  ),
+  Product(
+    code: "xytwrsd",
+    title: "Bingkai kenangan",
+    description: "Produk bingkai kenangan",
+    created: DateTime.now(),
+    updated: DateTime.now(),
+    imagePath: [],
+  ),
+  Product(
+    code: "xytwrsd",
+    title: "Bingkai kenangan",
+    description: "Produk bingkai kenangan",
+    created: DateTime.now(),
+    updated: DateTime.now(),
+    imagePath: [],
+  ),
+  Product(
+    code: "xytwrsd",
+    title: "Bingkai kenangan",
+    description: "Produk bingkai kenangan",
+    created: DateTime.now(),
+    updated: DateTime.now(),
+    imagePath: [],
   ),
   Product(
     code: "xytwrsd",

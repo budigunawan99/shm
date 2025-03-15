@@ -27,7 +27,7 @@ class CustomThemes {
     onSecondary: Colors.white,
     onSurface: Colors.white,
     brightness: Brightness.dark,
-    surfaceContainer: Color.fromARGB(255, 29, 33, 40),
+    surfaceContainer: Color.fromARGB(255, 55, 59, 65),
   );
 
   static AppBarTheme lightAppBarTheme = AppBarTheme(
