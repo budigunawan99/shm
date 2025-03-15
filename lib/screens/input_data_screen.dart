@@ -78,7 +78,7 @@ class _InputDataScreenState extends State<InputDataScreen> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   TextField(
-                    // controller: _titleController,
+                    controller: _codeController,
                     decoration: InputDecoration(
                       counterStyle: Theme.of(context).textTheme.labelLarge,
                     ),
@@ -97,7 +97,7 @@ class _InputDataScreenState extends State<InputDataScreen> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   TextField(
-                    // controller: _titleController,
+                    controller: _titleController,
                     decoration: InputDecoration(
                         counterStyle: Theme.of(context).textTheme.labelLarge),
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -115,7 +115,7 @@ class _InputDataScreenState extends State<InputDataScreen> {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   TextField(
-                    // controller: _titleController,
+                    controller: _descriptionController,
                     decoration: InputDecoration(
                         counterStyle: Theme.of(context).textTheme.labelLarge),
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -147,7 +147,8 @@ class _InputDataScreenState extends State<InputDataScreen> {
                     onPressed: () {},
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.all(20),
-                      backgroundColor: Colors.white,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.surfaceContainer,
                       shape: const StadiumBorder(),
                     ),
                     child: Text(

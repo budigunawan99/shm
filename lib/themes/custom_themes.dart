@@ -20,7 +20,7 @@ class CustomThemes {
   static const ColorScheme darkColorScheme = ColorScheme(
     primary: Color.fromARGB(255, 29, 33, 40),
     secondary: Color.fromARGB(255, 29, 33, 40),
-    surface: Color.fromARGB(255, 47, 50, 55),
+    surface: Color.fromARGB(255, 71, 76, 83),
     error: Colors.redAccent,
     onError: Colors.white,
     onPrimary: Colors.white,
@@ -41,8 +41,8 @@ class CustomThemes {
       color: lightColorScheme.onPrimary,
     ),
 // icons button theme
-    actionsIconTheme: const IconThemeData(
-      color: Colors.white,
+    actionsIconTheme: IconThemeData(
+      color: lightColorScheme.onPrimary,
       size: 16.0,
     ),
   );
@@ -58,8 +58,8 @@ class CustomThemes {
       color: darkColorScheme.onPrimary,
     ),
 // icons button theme
-    actionsIconTheme: const IconThemeData(
-      color: Colors.white,
+    actionsIconTheme: IconThemeData(
+      color: darkColorScheme.onPrimary,
       size: 16.0,
     ),
   );

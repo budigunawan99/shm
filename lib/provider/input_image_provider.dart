@@ -14,4 +14,8 @@ class InputImageProvider extends ChangeNotifier {
     _selectedImages.addAll(images);
     notifyListeners();
   }
+
+  void removeAllImages() {
+    _selectedImages.clear();
+  }
 }

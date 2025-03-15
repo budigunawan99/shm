@@ -73,6 +73,18 @@ class _InputImageGridState extends State<InputImageGrid> {
           );
         }
         final displaySelectedImages = File(selectedImages[index - 1]);
+        if (index == 1) {
+          return Hero(
+            tag: selectedImages[index - 1],
+            child: Image.file(
+              displaySelectedImages,
+              height: 100,
+              width: 100,
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+            ),
+          );
+        }
         return Image.file(
           displaySelectedImages,
           height: 100,
@@ -92,6 +104,13 @@ class _InputImageGridState extends State<InputImageGrid> {
     final String localPath = (await getApplicationDocumentsDirectory()).path;
 
     if (xfilePick.isNotEmpty) {
+      context
+          .read<InputImageProvider>()
+          .selectedImages
+          .forEach((x) async => await File(x).delete());
+
+      context.read<InputImageProvider>().removeAllImages();
+
       for (var i = 0; i < xfilePick.length; i++) {
         final fileName = path.basename(xfilePick[i].path);
         final File savedImage =
