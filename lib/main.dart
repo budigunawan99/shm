@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shm/model/image_preview_screen_argument.dart';
 import 'package:shm/model/input_data_screen_argument.dart';
 import 'package:shm/provider/input_image_provider.dart';
 import 'package:shm/provider/theme_provider.dart';
 import 'package:shm/screens/home_screen.dart';
+import 'package:shm/screens/image_preview_screen.dart';
 import 'package:shm/screens/input_data_screen.dart';
 import 'package:shm/screens/inventory_screen.dart';
 import 'package:shm/static/navigation_route.dart';
@@ -41,6 +43,11 @@ class MainApp extends StatelessWidget {
             NavigationRoute.homeRoute.name: (context) => const HomeScreen(),
             NavigationRoute.inventoryRoute.name: (context) =>
                 const InventoryScreen(),
+            NavigationRoute.imagePreviewRoute.name: (context) =>
+                ImagePreviewScreen(
+                  args: ModalRoute.of(context)?.settings.arguments
+                      as ImagePreviewScreenArgument,
+                ),
             NavigationRoute.inputDataRoute.name: (context) =>
                 ChangeNotifierProvider(
                   create: (context) => InputImageProvider(),
