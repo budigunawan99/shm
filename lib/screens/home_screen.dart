@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shm/model/image_preview_screen_argument.dart';
 import 'package:shm/screens/inventory_screen.dart';
 import 'package:shm/static/navigation_route.dart';
@@ -112,40 +110,75 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 )
-              : SliverGrid.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
+              : SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(
+                    12,
+                    15,
+                    12,
+                    10,
                   ),
-                  itemCount: productList[0].imagePath.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          NavigationRoute.imagePreviewRoute.name,
-                          arguments: ImagePreviewScreenArgument(
-                            galleryItems: productList[0].imagePath,
-                            backgroundDecoration: const BoxDecoration(
-                              color: Colors.black,
+                  sliver: SliverToBoxAdapter(
+                    child: Text(
+                      productList[0].description,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 0,
+            ),
+            sliver: SliverGrid.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+              ),
+              itemCount: productList[0].imagePath.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      NavigationRoute.imagePreviewRoute.name,
+                      arguments: ImagePreviewScreenArgument(
+                        description: productList[0].description,
+                        galleryItems: productList[0].imagePath,
+                        backgroundDecoration: const BoxDecoration(
+                          color: Colors.black,
+                        ),
+                        initialIndex: index,
+                        loadingBuilder: (context, event) => Center(
+                          child: SizedBox(
+                            width: 20.0,
+                            height: 20.0,
+                            child: CircularProgressIndicator(
+                              value: event == null ||
+                                      event.expectedTotalBytes == null
+                                  ? 0
+                                  : event.cumulativeBytesLoaded /
+                                      event.expectedTotalBytes!,
                             ),
                           ),
-                        );
-                      },
-                      child: Hero(
-                        tag: productList[0].imagePath[index],
-                        child: Image.file(
-                          File(productList[0].imagePath[index]),
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
                         ),
                       ),
                     );
                   },
-                )
+                  child: Hero(
+                    tag: productList[0].imagePath[index],
+                    child: Image.file(
+                      File(productList[0].imagePath[index]),
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
         ],
       ),
     );

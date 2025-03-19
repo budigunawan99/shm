@@ -48,7 +48,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
           height: MediaQuery.of(context).size.height,
         ),
         child: Stack(
-          alignment: Alignment.bottomRight,
+          alignment: Alignment.bottomCenter,
           children: <Widget>[
             PhotoViewGallery.builder(
               scrollPhysics: const BouncingScrollPhysics(),
@@ -58,8 +58,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
                     File(widget.args.galleryItems[index]),
                   ),
                   initialScale: PhotoViewComputedScale.contained,
-                  minScale:
-                      PhotoViewComputedScale.contained * (0.5 + index / 10),
+                  minScale: PhotoViewComputedScale.contained,
                   maxScale: PhotoViewComputedScale.covered * 4.1,
                   heroAttributes: PhotoViewHeroAttributes(
                     tag: widget.args.galleryItems[index],
@@ -73,17 +72,37 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
               onPageChanged: onPageChanged,
               scrollDirection: widget.args.scrollDirection,
             ),
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                "Image ${currentIndex + 1}",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 17.0,
-                  decoration: null,
+            Positioned(
+              top: 15,
+              child: Container(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "Gambar ${currentIndex + 1} dari ${widget.args.galleryItems.length.toString()}",
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Colors.white,
+                      ),
                 ),
               ),
-            )
+            ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 30,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(
+                  alpha: 0.6,
+                ),
+              ),
+              child: Text(
+                widget.args.description,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: Colors.white,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),

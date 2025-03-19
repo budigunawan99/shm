@@ -117,17 +117,17 @@ class InventoryScreen extends StatelessWidget {
 }
 
 final List<Product> productList = [
-  // Product(
-  //   code: "xytwrsd",
-  //   title: "Bingkai kenangan",
-  //   description: "Produk bingkai kenangan",
-  //   created: DateTime.now(),
-  //   updated: DateTime.now(),
-  //   imagePath: [
-  //     "/data/user/0/com.example.shm/app_flutter/scaled_IMG-20250112-WA0007.jpg",
-  //     "/data/user/0/com.example.shm/app_flutter/scaled_IMG-20250112-WA0037(1).jpg"
-  //   ],
-  // ),
+  Product(
+    code: "xytwrsd",
+    title: "Bingkai kenangan",
+    description: "Produk bingkai kenangan",
+    created: DateTime.now(),
+    updated: DateTime.now(),
+    imagePath: [
+      "/data/user/0/com.example.shm/app_flutter/scaled_IMG-20250112-WA0007.jpg",
+      "/data/user/0/com.example.shm/app_flutter/scaled_IMG-20250112-WA0037(1).jpg"
+    ],
+  ),
   // Product(
   //   code: "xytwrsd",
   //   title: "Bingkai kenangan",

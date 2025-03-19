@@ -7,6 +7,7 @@ class ImagePreviewScreenArgument {
   final BoxDecoration backgroundDecoration;
   final int initialIndex;
   final Axis scrollDirection;
+  final String description;
 
   ImagePreviewScreenArgument({
     required this.galleryItems,
@@ -14,5 +15,6 @@ class ImagePreviewScreenArgument {
     this.loadingBuilder,
     this.initialIndex = 0,
     this.scrollDirection = Axis.horizontal,
+    this.description = "",
   });
 }
