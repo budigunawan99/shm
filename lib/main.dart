@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shm/data/local/local_database_service.dart';
 import 'package:shm/model/image_preview_screen_argument.dart';
 import 'package:shm/model/input_data_screen_argument.dart';
 import 'package:shm/provider/input_image_provider.dart';
+import 'package:shm/provider/inventory_provider.dart';
 import 'package:shm/provider/theme_provider.dart';
 import 'package:shm/screens/home_screen.dart';
 import 'package:shm/screens/image_preview_screen.dart';
@@ -17,6 +19,11 @@ void main() {
       providers: [
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) => ThemeProvider(),
+        ),
+        Provider(create: (context) => LocalDatabaseService()),
+        ChangeNotifierProvider(
+          create: (context) =>
+              InventoryProvider(context.read<LocalDatabaseService>()),
         ),
       ],
       child: const MainApp(),

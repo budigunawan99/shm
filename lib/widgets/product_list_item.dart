@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shm/model/product.dart';
+import 'package:shm/provider/inventory_provider.dart';
 
 class ProductListItem extends StatelessWidget {
   final Product product;
@@ -34,6 +37,12 @@ class ProductListItem extends StatelessWidget {
                       child: Image.file(
                         File(product.imagePath.first),
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'images/img_default.png',
+                            fit: BoxFit.fitWidth,
+                          );
+                        },
                       ),
                     )
                   : Image.asset("images/img_default.png"),
@@ -92,6 +101,44 @@ class ProductListItem extends StatelessWidget {
               ],
             ),
           ),
+          IconButton(
+            onPressed: () async {
+              final inventoryProvider = context.read<InventoryProvider>();
+              if (context.mounted) {
+                QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.confirm,
+                  barrierDismissible: false,
+                  title: "Yakin ingin menghapus?",
+                  text: "Data yang sudah dihapus tidak dapat dikembalikan",
+                  titleColor: Theme.of(context).colorScheme.onSurface,
+                  textColor: Theme.of(context).colorScheme.onSurface,
+                  confirmBtnText: "OK",
+                  confirmBtnColor: Theme.of(context).colorScheme.primary,
+                  cancelBtnText: 'Batal',
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainer,
+                  onConfirmBtnTap: () async {
+                    for (var x in product.imagePath) {
+                      await File(x).delete();
+                    }
+                    await inventoryProvider.removeProductByCode(
+                      product.code,
+                    );
+                    await inventoryProvider.getAllProducts("");
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  },
+                );
+              }
+            },
+            icon: Icon(
+              Icons.delete_forever,
+              size: 25,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          )
         ],
       ),
     );

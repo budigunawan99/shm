@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:shm/provider/input_image_provider.dart';
 
 class InputImageGrid extends StatefulWidget {
-  const InputImageGrid({super.key});
+  const InputImageGrid({
+    super.key,
+  });
 
   @override
   State<InputImageGrid> createState() => _InputImageGridState();
@@ -82,6 +84,12 @@ class _InputImageGridState extends State<InputImageGrid> {
               width: 100,
               fit: BoxFit.cover,
               alignment: Alignment.center,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'images/img_default.png',
+                  fit: BoxFit.fitWidth,
+                );
+              },
             ),
           );
         }
@@ -91,6 +99,12 @@ class _InputImageGridState extends State<InputImageGrid> {
           width: 100,
           fit: BoxFit.cover,
           alignment: Alignment.center,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              'images/img_default.png',
+              fit: BoxFit.fitWidth,
+            );
+          },
         );
       },
     );
@@ -113,8 +127,8 @@ class _InputImageGridState extends State<InputImageGrid> {
 
       for (var i = 0; i < xfilePick.length; i++) {
         final fileName = path.basename(xfilePick[i].path);
-        final File savedImage =
-            await File(xfilePick[i].path).copy("$localPath/$fileName");
+        final File savedImage = await File(xfilePick[i].path)
+            .copy("$localPath/${UniqueKey().hashCode.toString()}_$fileName");
 
         print(savedImage.path);
         context.read<InputImageProvider>().setSelectedImages(savedImage.path);

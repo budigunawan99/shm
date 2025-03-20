@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shm/model/input_data_screen_argument.dart';
+import 'package:shm/model/product.dart';
 import 'package:shm/provider/input_image_provider.dart';
+import 'package:shm/provider/inventory_provider.dart';
+import 'package:shm/static/inventory_action_state.dart';
 import 'package:shm/widgets/appbar.dart';
 import 'package:shm/widgets/input_image_grid.dart';
 
@@ -143,18 +147,153 @@ class _InputDataScreenState extends State<InputDataScreen> {
               padding: const EdgeInsets.only(top: 20),
               sliver: SliverToBoxAdapter(
                 child: Center(
-                  child: TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.all(20),
-                      backgroundColor:
-                          Theme.of(context).colorScheme.surfaceContainer,
-                      shape: const StadiumBorder(),
-                    ),
-                    child: Text(
-                      'Simpan',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
+                  child: Consumer<InventoryProvider>(
+                    builder: (context, value, child) {
+                      return TextButton(
+                        onPressed: () async {
+                          final inputImageProvider =
+                              context.read<InputImageProvider>();
+                          if (_code == "" ||
+                              _title == "" ||
+                              _description == "" ||
+                              inputImageProvider.selectedImages.isEmpty) {
+                            if (context.mounted) {
+                              QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.warning,
+                                barrierDismissible: false,
+                                text: "Isi formnya terlebih dahulu",
+                                titleColor:
+                                    Theme.of(context).colorScheme.onSurface,
+                                textColor:
+                                    Theme.of(context).colorScheme.onSurface,
+                                confirmBtnText: "OK",
+                                confirmBtnColor:
+                                    Theme.of(context).colorScheme.primary,
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainer,
+                              );
+                            }
+                            return;
+                          }
+
+                          if (widget.args.actionPage.isEdit) {
+                            final product = Product(
+                              code: _code,
+                              title: _title,
+                              description: _description,
+                              created: widget.args.product?.created ??
+                                  DateTime.now(),
+                              updated: DateTime.now(),
+                              imagePath: inputImageProvider.selectedImages,
+                            );
+
+                            await value.editProductByCode(_code, product);
+                          } else {
+                            final product = Product(
+                              code: _code,
+                              title: _title,
+                              description: _description,
+                              created: DateTime.now(),
+                              updated: DateTime.now(),
+                              imagePath: inputImageProvider.selectedImages,
+                            );
+                            await value.saveProduct(product);
+                          }
+
+                          switch (value.actionResultState) {
+                            case InventoryActionLoadingState():
+                              if (context.mounted) {
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.loading,
+                                  disableBackBtn: true,
+                                  barrierDismissible: false,
+                                  title: "Loading...",
+                                  text: "Sedang menyimpan data",
+                                  titleColor:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  textColor:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainer,
+                                );
+                              }
+                            case InventoryActionErrorState(error: var message):
+                              if (context.mounted) {
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.error,
+                                  barrierDismissible: false,
+                                  title: "Error",
+                                  text: message,
+                                  titleColor:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  textColor:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  confirmBtnText: "OK",
+                                  confirmBtnColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainer,
+                                );
+                              }
+                              value.setActionResultState(
+                                  InventoryActionNoneState());
+
+                            case InventoryActionLoadedState(
+                                message: var message
+                              ):
+                              if (context.mounted) {
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.success,
+                                  barrierDismissible: false,
+                                  title: "Berhasil",
+                                  text: message,
+                                  titleColor:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  textColor:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  confirmBtnText: "OK",
+                                  confirmBtnColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainer,
+                                  onConfirmBtnTap: () async {
+                                    await value.getAllProducts("");
+                                    if (context.mounted) {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                );
+                              }
+                              value.setActionResultState(
+                                  InventoryActionNoneState());
+
+                            default:
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(20),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surfaceContainer,
+                          shape: const StadiumBorder(),
+                        ),
+                        child: Text(
+                          switch (value.resultState) {
+                            InventoryActionLoadingState() => 'Loading ...',
+                            _ => 'Simpan',
+                          },
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

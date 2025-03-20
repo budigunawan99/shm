@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Product {
   final String code;
   final String title;
@@ -20,10 +22,10 @@ class Product {
       code: json["code"],
       title: json["title"],
       description: json["description"],
-      created: json["created"],
-      updated: json["updated"],
+      created: DateTime.fromMillisecondsSinceEpoch(json["created"]),
+      updated: DateTime.fromMillisecondsSinceEpoch(json["updated"]),
       imagePath: json["imagePath"] != null
-          ? List<String>.from(json["imagePath"])
+          ? List<String>.from(jsonDecode(json["imagePath"]))
           : <String>[],
     );
   }
@@ -32,8 +34,8 @@ class Product {
         "code": code,
         "title": title,
         "description": description,
-        "created": created,
-        "updated": updated,
-        "imagePath": imagePath,
+        "created": created.millisecondsSinceEpoch,
+        "updated": updated.millisecondsSinceEpoch,
+        "imagePath": jsonEncode(imagePath),
       };
 }
