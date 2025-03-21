@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shm/data/local/local_database_service.dart';
 import 'package:shm/model/image_preview_screen_argument.dart';
 import 'package:shm/model/input_data_screen_argument.dart';
+import 'package:shm/provider/home_search_provider.dart';
 import 'package:shm/provider/input_image_provider.dart';
 import 'package:shm/provider/inventory_provider.dart';
 import 'package:shm/provider/theme_provider.dart';
@@ -24,6 +25,10 @@ void main() {
         ChangeNotifierProvider(
           create: (context) =>
               InventoryProvider(context.read<LocalDatabaseService>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              HomeSearchProvider(context.read<LocalDatabaseService>()),
         ),
       ],
       child: const MainApp(),

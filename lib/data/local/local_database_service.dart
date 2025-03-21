@@ -55,7 +55,10 @@ class LocalDatabaseService {
   Future<List<Product>> getAllItems() async {
     try {
       final db = await _initializeDb();
-      final results = await db.query(_tableName);
+      final results = await db.query(
+        _tableName,
+        orderBy: "updated DESC",
+      );
 
       if (results.isNotEmpty) {
         return results.map((result) => Product.fromJson(result)).toList();
@@ -125,6 +128,7 @@ class LocalDatabaseService {
         _tableName,
         where: "title LIKE ?",
         whereArgs: ["%$title%"],
+        orderBy: "updated DESC",
       );
 
       if (results.isNotEmpty) {

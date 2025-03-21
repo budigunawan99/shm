@@ -100,12 +100,18 @@ class InventoryProvider extends ChangeNotifier {
       _actionResultState = InventoryActionLoadingState();
       notifyListeners();
 
-      await _service.removeItem(code);
-
-      _actionResultState = InventoryActionLoadedState(
-        "Yeay, data anda berhasil dihapus!",
-      );
-      notifyListeners();
+      final result = await _service.removeItem(code);
+      if (result != 1) {
+        _actionResultState = InventoryActionErrorState(
+          "Yahh, data anda gagal dihapus!",
+        );
+        notifyListeners();
+      } else {
+        _actionResultState = InventoryActionLoadedState(
+          "Yeay, data anda berhasil dihapus!",
+        );
+        notifyListeners();
+      }
     } on Exception catch (e) {
       _actionResultState = InventoryActionErrorState(e.toString());
       notifyListeners();

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shm/model/product.dart';
 import 'package:shm/provider/inventory_provider.dart';
+import 'package:shm/static/inventory_action_state.dart';
 
 class ProductListItem extends StatelessWidget {
   final Product product;
@@ -101,44 +102,116 @@ class ProductListItem extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            onPressed: () async {
-              final inventoryProvider = context.read<InventoryProvider>();
-              if (context.mounted) {
-                QuickAlert.show(
-                  context: context,
-                  type: QuickAlertType.confirm,
-                  barrierDismissible: false,
-                  title: "Yakin ingin menghapus?",
-                  text: "Data yang sudah dihapus tidak dapat dikembalikan",
-                  titleColor: Theme.of(context).colorScheme.onSurface,
-                  textColor: Theme.of(context).colorScheme.onSurface,
-                  confirmBtnText: "OK",
-                  confirmBtnColor: Theme.of(context).colorScheme.primary,
-                  cancelBtnText: 'Batal',
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceContainer,
-                  onConfirmBtnTap: () async {
-                    for (var x in product.imagePath) {
-                      await File(x).delete();
-                    }
-                    await inventoryProvider.removeProductByCode(
-                      product.code,
-                    );
-                    await inventoryProvider.getAllProducts("");
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  },
-                );
-              }
+          Consumer<InventoryProvider>(
+            builder: (context, value, child) {
+              return IconButton(
+                onPressed: () {
+                  QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.confirm,
+                    barrierDismissible: false,
+                    title: "Yakin ingin menghapus?",
+                    text: "Data yang sudah dihapus tidak dapat dikembalikan",
+                    titleColor: Theme.of(context).colorScheme.onSurface,
+                    textColor: Theme.of(context).colorScheme.onSurface,
+                    confirmBtnText: "OK",
+                    confirmBtnColor: Theme.of(context).colorScheme.primary,
+                    cancelBtnText: 'Batal',
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceContainer,
+                    onConfirmBtnTap: () async {
+                      await value.removeProductByCode(
+                        product.code,
+                      );
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+
+                      switch (value.actionResultState) {
+                        case InventoryActionLoadingState():
+                          if (context.mounted) {
+                            QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.loading,
+                              disableBackBtn: true,
+                              barrierDismissible: false,
+                              title: "Loading...",
+                              text: "Sedang menghapus data",
+                              titleColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              textColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainer,
+                            );
+                          }
+
+                        case InventoryActionErrorState(error: var message):
+                          if (context.mounted) {
+                            QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.error,
+                              barrierDismissible: false,
+                              title: "Error",
+                              text: message,
+                              titleColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              textColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              confirmBtnText: "OK",
+                              confirmBtnColor:
+                                  Theme.of(context).colorScheme.primary,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainer,
+                            );
+                            value.setActionResultState(
+                                InventoryActionNoneState());
+                          }
+
+                        case InventoryActionLoadedState(message: var message):
+                          for (var x in product.imagePath) {
+                            await File(x).delete();
+                          }
+                          if (context.mounted) {
+                            QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.success,
+                              barrierDismissible: false,
+                              title: "Berhasil",
+                              text: message,
+                              titleColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              textColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              confirmBtnText: "OK",
+                              confirmBtnColor:
+                                  Theme.of(context).colorScheme.primary,
+                              backgroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainer,
+                            );
+                            value.setActionResultState(
+                                InventoryActionNoneState());
+                          }
+                          await value.getAllProducts("");
+
+                        default:
+                          break;
+                      }
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.delete_forever,
+                  size: 25,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              );
             },
-            icon: Icon(
-              Icons.delete_forever,
-              size: 25,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          )
+          ),
         ],
       ),
     );
