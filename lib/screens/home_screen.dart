@@ -252,6 +252,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 100,
                             fit: BoxFit.cover,
                             alignment: Alignment.center,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'images/img_default.png',
+                                fit: BoxFit.fitWidth,
+                              );
+                            },
                           ),
                         ),
                       );
