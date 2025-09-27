@@ -126,8 +126,8 @@ class LocalDatabaseService {
       final db = await _initializeDb();
       final results = await db.query(
         _tableName,
-        where: "title LIKE ?",
-        whereArgs: ["%$title%"],
+        where: "title LIKE ? OR code LIKE ?",
+        whereArgs: ["%$title%", "%$title%"],
         orderBy: "updated DESC",
       );
 
