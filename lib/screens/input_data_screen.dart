@@ -106,7 +106,7 @@ class _InputDataScreenState extends State<InputDataScreen> {
                         counterStyle: Theme.of(context).textTheme.labelLarge),
                     style: Theme.of(context).textTheme.bodyLarge,
                     maxLines: null,
-                    maxLength: 20,
+                    maxLength: 50,
                     onChanged: (value) {
                       _title = value;
                     },

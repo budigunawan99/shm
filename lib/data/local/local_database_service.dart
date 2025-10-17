@@ -9,15 +9,60 @@ class LocalDatabaseService {
   static const int _version = 1;
 
   Future<void> createTables(Database database) async {
-    await database.execute("""CREATE TABLE $_tableName(
-      code TEXT PRIMARY KEY,
-      title TEXT,
-      description TEXT,
-      created INTEGER,
-      updated INTEGER,
-      imagePath TEXT
-     )
-     """);
+    // Drop old versions if they exist
+    await database.execute('DROP TABLE IF EXISTS $_tableName;');
+    await database.execute('DROP TABLE IF EXISTS ${_tableName}_fts;');
+    await database.execute('DROP TRIGGER IF EXISTS ${_tableName}_insert;');
+    await database.execute('DROP TRIGGER IF EXISTS ${_tableName}_update;');
+    await database.execute('DROP TRIGGER IF EXISTS ${_tableName}_delete;');
+
+    // Create main table
+    await database.execute("""
+      CREATE TABLE $_tableName(
+        code TEXT PRIMARY KEY,
+        title TEXT,
+        description TEXT,
+        created INTEGER,
+        updated INTEGER,
+        imagePath TEXT
+      );
+    """);
+
+    // Create FTS4 table
+    await database.execute("""
+      CREATE VIRTUAL TABLE ${_tableName}_fts USING fts4(
+        code,
+        title,
+        description
+      );
+    """);
+
+    // Trigger on insert
+    await database.execute("""
+      CREATE TRIGGER ${_tableName}_insert AFTER INSERT ON $_tableName
+        BEGIN
+        INSERT INTO ${_tableName}_fts (code, title, description)
+        VALUES (new.code, new.title, new.description);
+        END;
+    """);
+
+    // Trigger on update
+    await database.execute("""
+      CREATE TRIGGER ${_tableName}_update AFTER UPDATE ON $_tableName
+        BEGIN
+        DELETE FROM ${_tableName}_fts WHERE code = old.code;
+        INSERT INTO ${_tableName}_fts (code, title, description)
+        VALUES (new.code, new.title, new.description);
+      END;
+    """);
+
+    // Trigger on delete
+    await database.execute("""
+      CREATE TRIGGER ${_tableName}_delete AFTER DELETE ON $_tableName
+      BEGIN
+        DELETE FROM ${_tableName}_fts WHERE code = old.code;
+      END;
+    """);
   }
 
   Future<Database> _initializeDb() async {
@@ -124,12 +169,18 @@ class LocalDatabaseService {
   Future<List<Product>> searchItemsByTitle(String title) async {
     try {
       final db = await _initializeDb();
-      final results = await db.query(
-        _tableName,
-        where: "title LIKE ? OR code LIKE ?",
-        whereArgs: ["%$title%", "%$title%"],
-        orderBy: "updated DESC",
-      );
+      final tokens = title.trim().split(RegExp(r'\s+'));
+      final wildCardTokens = tokens.map((token) => '$token*');
+      final query = wildCardTokens.join(' ');
+
+      var sql = """
+        SELECT d.code, d.title, d.description, d.created, d.updated, d.imagePath
+        FROM $_tableName d
+        JOIN ${_tableName}_fts f ON d.code = f.code
+        WHERE ${_tableName}_fts MATCH ?
+      """;
+
+      final results = await db.rawQuery(sql, [query]);
 
       if (results.isNotEmpty) {
         return results.map((result) => Product.fromJson(result)).toList();
